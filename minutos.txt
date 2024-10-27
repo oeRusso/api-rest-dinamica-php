@@ -1,0 +1,8 @@
+leccion 23  min 11 
+
+//TODO: fijarse si funciona bien todo
+// copiar una vez q termine de corregir tod ala sentencia (prestar atencion y entender la sentenacia)
+//TODO: PQ EN EL INDICE 0 ESTA EL NOMBRE D ELA TABLA? (es por el explode)" tambien entender como se van a ir separando los valores
+//RECORDA SIEMPRE QUE PARA ABRIR CUALQUIER OTRO PROYECTO DE PHP NECESITAS QUITAR EL HOST VIRTUAL
+//para cambiar de bd solo cambias en el nombre de la bd en connection.php y en la url donde estas llamando las tablas, cambias por als tablas de la bd nueva
+//las bases de datos q funcionen con esta aplicacion deben respetar las convenciones mencionadas en el inicio del video
