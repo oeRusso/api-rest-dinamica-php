@@ -1,9 +1,11 @@
 {
     "cSpell.words": [
         "buscador",
+        "columnas",
         "controlador",
         "datos",
         "eliminar",
+        "existencia",
         "filtrar",
         "filtro",
         "filtros",
@@ -15,6 +17,7 @@
         "rango",
         "relacionadas",
         "relaciones",
-        "respuesta"
+        "respuesta",
+        "validar"
     ]
 }

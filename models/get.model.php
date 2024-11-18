@@ -11,6 +11,20 @@ class GetModel
     static public function getData($table, $select, $orderBy, $orderMode, $startAt, $endAt)
     {
 
+        /*========================================================
+          validar existencia de un tabla y de las columnas en la bd
+        ==========================================================*/
+       $selectArray = explode(',',$select);
+
+       echo '<pre>'; print_r(Connection::getColumsData($table, $selectArray)); echo '</pre>';
+
+       return;
+        if (empty(Connection::getColumsData($table, $selectArray))) {
+           
+            return null;
+        }
+
+
         /*===================================
             Sin ordenar y sin limitar datos
         ====================================*/
@@ -60,6 +74,14 @@ class GetModel
 
     static public function getDataFilter($table, $select, $linkTo, $equalTo, $orderBy, $orderMode, $startAt, $endAt)
     {
+
+        /*=========================================
+            validar existencia de un tabla en la bd
+       =========================================*/
+        if (empty(Connection::getColumsData($table))) {
+
+            return null;
+        }
         $linkToArray = explode(",", $linkTo);
         $equalToArray = explode(",", $equalTo);
         $linkToText = "";
@@ -130,6 +152,8 @@ class GetModel
     ============================================================*/
     static public function getRelData($rel, $type, $select, $orderBy, $orderMode, $startAt, $endAt)
     {
+
+
         $relArray = explode(",", $rel);
         $typeArray = explode(",", $type);
         $innerJoinText = "";
@@ -137,6 +161,14 @@ class GetModel
         if (count($relArray) > 1) {
 
             foreach ($relArray as $key => $value) {
+
+                /*=========================================
+                    validar existencia de un tabla en la bd
+                 =========================================*/
+                if (empty(Connection::getColumsData($value))) {
+
+                    return null;
+                }
 
                 if ($key > 0) {
                     $innerJoinText .= "INNER JOIN " . $value . " ON " . $relArray[0] . ".id_" . $typeArray[$key] . "_" . $typeArray[0] . " =
@@ -203,6 +235,13 @@ class GetModel
         if (count($linkToArray) > 1) {
 
             foreach ($linkToArray as $key => $value) {
+                /*=========================================
+                    validar existencia de un tabla en la bd
+                 =========================================*/
+                if (empty(Connection::getColumsData($value))) {
+
+                    return null;
+                }
 
                 if ($key > 0) {
                     $linkToText .= "AND " . $value . " = :" . $value . " ";
@@ -290,6 +329,13 @@ class GetModel
 
             foreach ($linkToArray as $key => $value) {
 
+                /*=========================================
+                    validar existencia de un tabla en la bd
+                 =========================================*/
+                if (empty(Connection::getColumsData($value))) {
+
+                    return null;
+                }
                 if ($key > 0) {
                     $linkToText .= "AND " . $value . " = :" . $value . " ";
                 }
@@ -345,7 +391,7 @@ class GetModel
         return $stmt->fetchAll(PDO::FETCH_CLASS);
     }
 
-   /*================================================
+    /*================================================
     peticiones GET para el buscador entre tablas relacionadas
    ===================================================*/
     static public function getRelDataSearch($rel, $type, $select, $linkTo, $search, $orderBy, $orderMode, $startAt, $endAt)
@@ -360,6 +406,14 @@ class GetModel
         if (count($linkToArray) > 1) {
 
             foreach ($linkToArray as $key => $value) {
+
+                /*=========================================
+                    validar existencia de un tabla en la bd
+                 =========================================*/
+                if (empty(Connection::getColumsData($value))) {
+
+                    return null;
+                }
 
                 if ($key > 0) {
                     $linkToText .= "AND " . $value . " = :" . $value . " ";
@@ -424,7 +478,7 @@ class GetModel
 
             foreach ($linkToArray as $key => $value) {
                 if ($key > 0) {
-    
+
                     $stmt->bindParam(":" . $value, $searchArray[$key], PDO::PARAM_STR);
                 }
             }
@@ -437,17 +491,27 @@ class GetModel
         }
     }
 
-    static public function getDataRange($table, $select, $linkTo, $between1,$between2, $orderBy, $orderMode, $startAt, $endAt,$filterTo, $inTo)
-   {
+    static public function getDataRange($table, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo)
+    {
 
-        $filter= "";
+        /*=========================================
+        validar existencia de un tabla en la bd
+       =========================================*/
+        if (empty(Connection::getColumsData($table))) {
 
-        if ($filterTo != null & $inTo != null) {
-            $filter = 'AND '.$filterTo.' IN ('.$inTo.')';
+            return null;
         }
 
-    
-       /*===================================
+        $filter = "";
+
+        if ($filterTo != null & $inTo != null) {
+            $filter = 'AND ' . $filterTo . ' IN (' . $inTo . ')';
+        }
+
+
+
+
+        /*===================================
             Sin ordenar y sin limitar datos
         ====================================*/
 
@@ -488,15 +552,15 @@ class GetModel
         $stmt->execute();
 
         return $stmt->fetchAll(PDO::FETCH_CLASS);
-   }
+    }
 
-   static public function getRelDataRange($rel, $type, $select, $linkTo, $between1,$between2, $orderBy, $orderMode, $startAt, $endAt,$filterTo, $inTo)
-   {
+    static public function getRelDataRange($rel, $type, $select, $linkTo, $between1, $between2, $orderBy, $orderMode, $startAt, $endAt, $filterTo, $inTo)
+    {
 
-        $filter= "";
+        $filter = "";
 
         if ($filterTo != null & $inTo != null) {
-            $filter = 'AND '.$filterTo.' IN ('.$inTo.')';
+            $filter = 'AND ' . $filterTo . ' IN (' . $inTo . ')';
         }
 
         $relArray = explode(",", $rel);
@@ -507,13 +571,21 @@ class GetModel
 
             foreach ($relArray as $key => $value) {
 
+                /*=========================================
+                    validar existencia de un tabla en la bd
+                 =========================================*/
+                if (empty(Connection::getColumsData($value))) {
+
+                    return null;
+                }
+
                 if ($key > 0) {
                     $innerJoinText .= "INNER JOIN " . $value . " ON " . $relArray[0] . ".id_" . $typeArray[$key] . "_" . $typeArray[0] . " =
                      " . $value . ".id_" . $typeArray[$key] . " ";
                 }
             }
-    
-        /*===================================
+
+            /*===================================
                 Sin ordenar y sin limitar datos
             ====================================*/
 
@@ -554,9 +626,8 @@ class GetModel
             $stmt->execute();
 
             return $stmt->fetchAll(PDO::FETCH_CLASS);
-    } else{
-        return null;
+        } else {
+            return null;
+        }
     }
-
- }
 }
